@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cad9efd173964939997cdc11eb7e6091" Name="Diagram1">
+        <EntityTypeShape EntityType="MatrixModel.CSP" Width="1.5" PointX="5.875" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixModel.CSP_DOC" Width="1.5" PointX="7.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixModel.Documents" Width="1.5" PointX="2.25" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixModel.Donnees" Width="1.5" PointX="7.625" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixModel.Emetteurs" Width="1.5" PointX="2.375" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MatrixModel.TypeDoc" Width="1.5" PointX="4" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="MatrixModel.FK_CSP_DOC_CSP" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixModel.FK_Donnees_CSP" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixModel.FK_CSP_DOC_Documents" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixModel.FK_Documents_Emetteur" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixModel.FK_Documents_Type" ManuallyRouted="false" />
+        <AssociationConnector Association="MatrixModel.FK_Donnees_Documents" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MatrixModel.sysdiagrams" Width="1.5" PointX="5.375" PointY="4.25" />
+        <EntityTypeShape EntityType="MatrixModel.ClientDoc" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="MatrixModel.DonneesCIN" Width="1.5" PointX="0.5" PointY="3" />
+        <AssociationConnector Association="MatrixModel.FK_ClientDoc_CSP" />
+        <AssociationConnector Association="MatrixModel.FK_ClientDoc_Documents" />
+        <AssociationConnector Association="MatrixModel.FK_DonneesCIN_ClientDocs" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

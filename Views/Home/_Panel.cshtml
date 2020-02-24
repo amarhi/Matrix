@@ -1,0 +1,56 @@
+﻿@using Matrix.Models
+
+@model PanelModel
+
+<div class="form-group">
+    <div class="control-label col-md-2">@Model.Idc</div>
+    <div class="control-label col-md-2">@Model.Cs</div>
+    <div class="control-label col-md-2">@Model.Url</div>
+</div>
+<br />
+
+@foreach (var item in Model.cSP_DOC)
+{   
+<div class="col-md-4 panel">
+    <div class="panelheader">
+        <a href="#" class="closepanel pull-right"><i class=" fa fa-close"></i></a>
+        <button type="submit" class="download btn btn-xs btn-primary">Télécharger</button>
+        @Html.DisplayFor(modelItem => item.Documents.Libelle)
+           
+    </div>
+
+    <div class="pagesarea">
+        <ul class="pageslist ui-sortable">
+        </ul>
+    </div>
+    <div style="clear: both; margin-bottom: 8px;"></div>
+</div>
+   
+
+}
+
+
+
+
+<div class="col-md-12 panel">
+    <div class="panelheader">
+        <a href="#" class="closepanel pull-right"><i class=" fa fa-close"></i></a>
+        <button type="submit" class="download btn btn-xs btn-primary">Download</button>
+    </div>
+
+    <div class="pagesarea">
+        <ul class="pageslist">
+            @for (int i = 0; Model.Document != null && i < Model.Document.Pages.Count; i++)
+            {
+                TallComponents.PDF.Page page = Model.Document.Pages[i];
+                bool swap = page.Orientation == TallComponents.PDF.Orientation.Rotate90 || page.Orientation == TallComponents.PDF.Orientation.Rotate270;
+                int width = (int)((PanelModel.THUMBRES / 72f) * (swap ? page.Height : page.Width));
+                int height = (int)((PanelModel.THUMBRES / 72f) * (swap ? page.Width : page.Height));
+                <li class="ui-state-default">
+                    <img class="pagethumbnail" src="/Home/Thumbnail?d=@Model.DocumentGuid&i=@i" width="@width" height="@height" data-guid="@Model.DocumentGuid" data-index="@i" />
+                </li>
+            }
+        </ul>
+    </div>
+    <div style="clear: both; margin-bottom: 8px;"></div>
+</div>

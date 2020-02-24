@@ -1,0 +1,244 @@
+﻿@model Matrix.Models.ClientDoc
+
+
+
+@using (Html.BeginForm("Create", "ClientDocs"))
+{
+    @Html.AntiForgeryToken()
+    <body>
+        <Br />
+        <Br />
+        <Br />
+        <Br />
+        <div class="form-horizontal">
+            <h4>Depouillement des documents</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IdClient, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IdClient, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.IdClient, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CodeCSP, "CodeCSP", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div id="cs" class="col-md-10">
+                    @Html.DropDownList("CodeCSP", null, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CodeCSP, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.CodeDoc, "CodeDoc", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10" id="cs">
+                    @Html.DropDownList("CodeDoc", null, "Document Global", htmlAttributes: new { @class = "form-control hidden" })
+                    @Html.ValidationMessageFor(model => model.CodeDoc, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.UrlDoc, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <span class="btn btn-success fileinput-button" data-trigger="manual" data-placement="right" data-content="Commencer par le chargement d'un document PDF.">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <span>Sélectionner PDF...</span>
+
+                        <input id="fileupload" type="file" name="upload">
+                        @Html.ValidationMessageFor(model => model.UrlDoc, "", new { @class = "text-danger" })
+                    </span>
+
+                    <span id="upload-failed" class="error">
+                        <i class="glyphicon glyphicon-exclamation-sign"></i>
+                        Upload failed
+                    </span>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IdDoc, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.IdDoc, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.IdDoc, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>
+
+        </div>
+
+        <div id="panels" class="row">
+
+        </div>
+
+        @section scripts {
+            <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+            <script src="~/Scripts/fileupload/jquery.ui.widget.js"></script>
+            <script src="~/Scripts/fileupload/jquery.fileupload.js"></script>
+            <script src="~/Scripts/fileupload/jquery.iframe-transport.js"></script>
+            <script>
+      $(function () {
+         $(document).on('click', 'a.closepanel', function () {
+            var id = $(this).parents('div.panel').attr('id');
+            removePanel(id);
+         });
+
+         $(document).on('click', 'button.download', function () {
+            pages = new Array();
+            var id = $(this).parents('div.panel').attr('id');
+            $('#' + id).find('img.pagethumbnail').each(function () {
+               pages.push({ "Guid": $(this).attr('data-guid'), "Index": $(this).attr('data-index') });
+            });
+
+            $.ajax({
+               type: "POST",
+               url: '@Url.Action("Download", "Depouillement")',
+               data: JSON.stringify(pages),
+               contentType: "application/json",
+               dataType: "text",
+
+               success: function (data) {
+                  var url = '@Url.Action("Download", "Depouillement")' + '?id=' + data;
+                  window.location = url;
+               }
+            });
+         });
+
+         $('#newpanel').click(function () {
+            $.get('@Url.Action("Panel", "Depouillement")')
+            .done(function (data) {
+               addPanel(data);
+            })
+            .fail(function () {
+               $('#new-panel-failed').show().delay(3000).fadeOut(500);
+            });
+         });
+
+
+         $('#fileupload').fileupload({
+            url: '@Url.Action("Upload", "Depouillement")',
+            dataType: 'html',
+            sequentialUploads: true,
+
+            done: function (e, data) {
+               addPanel(data.result);
+            },
+
+            fail: function () {
+               $('#upload-failed').show().delay(3000).fadeOut(500);
+            },
+         }).prop('disabled', !$.support.fileInput)
+             .parent().addClass($.support.fileInput ? undefined : 'disabled');
+         updateToolbar();
+      });
+
+      function addPanel(data) {
+
+         var id = guid();
+         $(data)
+            .hide()
+            .prependTo('#panels')
+            .slideDown()
+            .attr('id', id);
+
+         $(".pageslist").sortable({
+            connectWith: ".pageslist",
+
+            stop: function (event, ui) {
+               updatePanels();
+            }
+
+         }).disableSelection();
+
+         updatePanels();
+
+         updateToolbar();
+      }
+
+      function updateToolbar() {
+         $('.panel').popover('hide');
+
+         if ($('.pagethumbnail').size() == 0) {
+            // no pdf has been uploaded yet
+            $('#newpanel').hide();
+            $('#newpanel').popover('hide');
+            $('.fileinput-button').popover('show');
+         }
+         else {
+            // atleast one pdf has been uploaded
+            $('.fileinput-button').popover('hide');
+
+            var countEmptyPanels = 0;
+            $('.panel').each(function () {
+               if ($(this).find('.pagethumbnail').size() == 0) {
+                  if (0 == countEmptyPanels) {
+                     // first empty panel
+                     $(this).popover({
+                        placement: "bottom",
+                        duration: "show",
+                        content: "Drop pages on this empty panel."
+                     });
+                  }
+                  countEmptyPanels++;
+               }
+            });
+
+            if (countEmptyPanels == 0) {
+               $('#newpanel').show();
+               $('#newpanel').popover('show');
+            }
+            else {
+               $('#newpanel').popover('hide');
+
+            }
+         }
+      }
+
+      function updatePanels() {
+         $('.panel').each(function () {
+            if ($(this).find('.pagethumbnail').size() == 0) {
+               $(this).find('button.download').hide();
+            }
+            else {
+               $(this).find('button.download').show();
+            }
+         });
+      }
+
+      function removePanel(id) {
+         $('#panels').find('div.panel[id=' + id + ']').hide({
+            duration: "slow",
+            done: function () {
+               $(this).remove();
+               updateToolbar();
+               debug();
+            }
+         });
+
+      }
+
+      function guid() {
+         function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+              .toString(16)
+              .substring(1);
+         }
+         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+           s4() + '-' + s4() + s4() + s4();
+      }
+            </script>
+        }
+
+
+
+    </body>
+}

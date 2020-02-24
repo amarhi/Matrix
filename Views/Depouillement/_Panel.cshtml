@@ -1,0 +1,202 @@
+﻿
+
+@using Matrix.Models
+
+<div class="col-md-12 panel">
+    <div class="panelheader">
+        <a href="#" class="closepanel pull-right"><i class=" fa fa-close"></i></a>
+        <button type="submit" class="download btn btn-xs btn-primary">Download</button>
+    </div>
+
+    <div class="form-group">
+        <div class="control-label col-md-2"> @ViewBag.Idc</div>
+
+        <div class="control-label col-md-2"> @ViewBag.cs</div>
+
+        <div class="control-label col-md-2">@ViewBag.Url</div>
+    </div>
+
+    <div class="pagesarea">
+        <ul class="pageslist">
+            @for (int i = 0; Model.Document != null && i < Model.Document.Pages.Count; i++)
+            {
+                TallComponents.PDF.Page page = Model.Document.Pages[i];
+                bool swap = page.Orientation == TallComponents.PDF.Orientation.Rotate90 || page.Orientation == TallComponents.PDF.Orientation.Rotate270;
+                int width = (int)((PanelModel.THUMBRES / 72f) * (swap ? page.Height : page.Width));
+                int height = (int)((PanelModel.THUMBRES / 72f) * (swap ? page.Width : page.Height));
+                <li class="ui-state-default">
+                    <img class="pagethumbnail" src="/Home/Thumbnail?d=@Model.DocumentGuid&i=@i" width="@width" height="@height" data-guid="@Model.DocumentGuid" data-index="@i" />
+                </li>
+            }
+        </ul>
+    </div>
+
+
+    <div style="clear: both; margin-bottom: 8px;"></div>
+</div>
+
+<div id="panels" class="row">
+
+</div>
+
+@section scripts {
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="~/Scripts/fileupload/jquery.ui.widget.js"></script>
+    <script src="~/Scripts/fileupload/jquery.fileupload.js"></script>
+    <script src="~/Scripts/fileupload/jquery.iframe-transport.js"></script>
+    <script>
+      $(function () {
+         $(document).on('click', 'a.closepanel', function () {
+            var id = $(this).parents('div.panel').attr('id');
+            removePanel(id);
+         });
+
+         $(document).on('click', 'button.download', function () {
+            pages = new Array();
+            var id = $(this).parents('div.panel').attr('id');
+            $('#' + id).find('img.pagethumbnail').each(function () {
+               pages.push({ "Guid": $(this).attr('data-guid'), "Index": $(this).attr('data-index') });
+            });
+
+            $.ajax({
+               type: "POST",
+               url: '@Url.Action("Download", "Depouillement")',
+               data: JSON.stringify(pages),
+               contentType: "application/json",
+               dataType: "text",
+
+               success: function (data) {
+                  var url = '@Url.Action("Download", "Depouillement")' + '?id=' + data;
+                  window.location = url;
+               }
+            });
+         });
+
+         $('#newpanel').click(function () {
+            $.get('@Url.Action("Panel", "Depouillement")')
+            .done(function (data) {
+               addPanel(data);
+            })
+            .fail(function () {
+               $('#new-panel-failed').show().delay(3000).fadeOut(500);
+            });
+         });
+
+
+         $('#fileupload').fileupload({
+            url: '@Url.Action("Upload", "Depouillement")',
+            dataType: 'html',
+            sequentialUploads: true,
+
+            done: function (e, data) {
+               addPanel(data.result);
+            },
+
+            fail: function () {
+               $('#upload-failed').show().delay(3000).fadeOut(500);
+            },
+         }).prop('disabled', !$.support.fileInput)
+             .parent().addClass($.support.fileInput ? undefined : 'disabled');
+         updateToolbar();
+      });
+
+      function addPanel(data) {
+
+         var id = guid();
+         $(data)
+            .hide()
+            .prependTo('#panels')
+            .slideDown()
+            .attr('id', id);
+
+         $(".pageslist").sortable({
+            connectWith: ".pageslist",
+
+            stop: function (event, ui) {
+               updatePanels();
+            }
+
+         }).disableSelection();
+
+         updatePanels();
+
+         updateToolbar();
+      }
+
+      function updateToolbar() {
+         $('.panel').popover('hide');
+
+         if ($('.pagethumbnail').size() == 0) {
+            // no pdf has been uploaded yet
+            $('#newpanel').hide();
+            $('#newpanel').popover('hide');
+            $('.fileinput-button').popover('show');
+         }
+         else {
+            // atleast one pdf has been uploaded
+            $('.fileinput-button').popover('hide');
+
+            var countEmptyPanels = 0;
+            $('.panel').each(function () {
+               if ($(this).find('.pagethumbnail').size() == 0) {
+                  if (0 == countEmptyPanels) {
+                     // first empty panel
+                     $(this).popover({
+                        placement: "bottom",
+                        duration: "show",
+                        content: "Drop pages on this empty panel."
+                     });
+                  }
+                  countEmptyPanels++;
+               }
+            });
+
+            if (countEmptyPanels == 0) {
+               $('#newpanel').show();
+               $('#newpanel').popover('show');
+            }
+            else {
+               $('#newpanel').popover('hide');
+
+            }
+         }
+      }
+
+      function updatePanels() {
+         $('.panel').each(function () {
+            if ($(this).find('.pagethumbnail').size() == 0) {
+               $(this).find('button.download').hide();
+            }
+            else {
+               $(this).find('button.download').show();
+            }
+         });
+      }
+
+      function removePanel(id) {
+         $('#panels').find('div.panel[id=' + id + ']').hide({
+            duration: "slow",
+            done: function () {
+               $(this).remove();
+               updateToolbar();
+               debug();
+            }
+         });
+
+      }
+
+      function guid() {
+         function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+              .toString(16)
+              .substring(1);
+         }
+         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+           s4() + '-' + s4() + s4() + s4();
+      }
+    </script>
+    }
+
+
+
+

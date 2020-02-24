@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Matrix.Models.Donnees>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Nouvelle Donnée", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LibData)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TypeData)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.C7)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.C8)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CSP.Libelle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Documents.Libelle)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LibData)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TypeData)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.C7)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.C8)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CSP.Libelle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Documents.Libelle)
+        </td>
+        <td>
+            @Html.ActionLink("Modifier", "Edit", new { id=item.CodeData }) |
+            @Html.ActionLink("Détails", "Details", new { id=item.CodeData }) |
+            @Html.ActionLink("Supprimer", "Delete", new { id=item.CodeData })
+        </td>
+    </tr>
+}
+
+</table>

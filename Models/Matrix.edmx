@@ -1,0 +1,684 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MatrixModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ClientDoc">
+          <Key>
+            <PropertyRef Name="IdDoc" />
+          </Key>
+          <Property Name="IdClient" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CodeCSP" Type="varchar" MaxLength="10" />
+          <Property Name="CodeDoc" Type="varchar" MaxLength="10" />
+          <Property Name="IdDoc" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UrlDoc" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="CSP">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Libelle" Type="varchar" MaxLength="50" />
+          <Property Name="Type" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="CSP_DOC">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodeCSP" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CodeDoc" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="C5" Type="nchar" MaxLength="10" />
+          <Property Name="C6" Type="nchar" MaxLength="10" />
+          <Property Name="C7" Type="int" />
+        </EntityType>
+        <EntityType Name="Documents">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Libelle" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Origine" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CodeEmetteur" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Filler" Type="varchar" MaxLength="50" />
+          <Property Name="C8" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Donnees">
+          <Key>
+            <PropertyRef Name="CodeData" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code_CSP" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CodeDoc" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="CodeData" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="LibData" Type="varchar" MaxLength="50" />
+          <Property Name="TypeData" Type="varchar" MaxLength="10" />
+          <Property Name="C7" Type="varchar" MaxLength="50" />
+          <Property Name="C8" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="DonneesCIN">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdDoc" Type="int" Nullable="false" />
+          <Property Name="NOCIN" Type="varchar" MaxLength="10" />
+          <Property Name="NOM" Type="nchar" MaxLength="10" />
+          <Property Name="PERNOM" Type="nchar" MaxLength="10" />
+          <Property Name="DTNAISS" Type="date" />
+          <Property Name="DTVALID" Type="date" />
+          <Property Name="ADRESS" Type="nvarchar" MaxLength="50" />
+          <Property Name="ADRESS2" Type="nvarchar" MaxLength="50" />
+          <Property Name="VILLE" Type="nvarchar" MaxLength="50" />
+          <Property Name="PPERE" Type="nvarchar" MaxLength="50" />
+          <Property Name="NMERE" Type="nvarchar" MaxLength="50" />
+          <Property Name="Dossier" Type="nvarchar" MaxLength="30" />
+          <Property Name="Link" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Emetteurs">
+          <Key>
+            <PropertyRef Name="CodeEmetteur" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CodeEmetteur" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="LibeEmetteur" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TypeEmetteur" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TypeDoc">
+          <Key>
+            <PropertyRef Name="Code_Type" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code_Type" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Description" Type="nchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_ClientDoc_CSP">
+          <End Role="CSP" Type="Self.CSP" Multiplicity="0..1" />
+          <End Role="ClientDoc" Type="Self.ClientDoc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CSP">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ClientDoc">
+              <PropertyRef Name="CodeCSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClientDoc_Documents">
+          <End Role="Documents" Type="Self.Documents" Multiplicity="0..1" />
+          <End Role="ClientDoc" Type="Self.ClientDoc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documents">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ClientDoc">
+              <PropertyRef Name="CodeDoc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CSP_DOC_CSP">
+          <End Role="CSP" Type="Self.CSP" Multiplicity="1" />
+          <End Role="CSP_DOC" Type="Self.CSP_DOC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CSP">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="CSP_DOC">
+              <PropertyRef Name="CodeCSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CSP_DOC_Documents">
+          <End Role="Documents" Type="Self.Documents" Multiplicity="1" />
+          <End Role="CSP_DOC" Type="Self.CSP_DOC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documents">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="CSP_DOC">
+              <PropertyRef Name="CodeDoc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documents_Emetteur">
+          <End Role="Emetteurs" Type="Self.Emetteurs" Multiplicity="1" />
+          <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Emetteurs">
+              <PropertyRef Name="CodeEmetteur" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="CodeEmetteur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documents_Type">
+          <End Role="TypeDoc" Type="Self.TypeDoc" Multiplicity="1" />
+          <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeDoc">
+              <PropertyRef Name="Code_Type" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Donnees_CSP">
+          <End Role="CSP" Type="Self.CSP" Multiplicity="1" />
+          <End Role="Donnees" Type="Self.Donnees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CSP">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Donnees">
+              <PropertyRef Name="Code_CSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Donnees_Documents">
+          <End Role="Documents" Type="Self.Documents" Multiplicity="1" />
+          <End Role="Donnees" Type="Self.Donnees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documents">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Donnees">
+              <PropertyRef Name="CodeDoc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DonneesCIN_ClientDocs">
+          <End Role="ClientDoc" Type="Self.ClientDoc" Multiplicity="1" />
+          <End Role="DonneesCIN" Type="Self.DonneesCIN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClientDoc">
+              <PropertyRef Name="IdDoc" />
+            </Principal>
+            <Dependent Role="DonneesCIN">
+              <PropertyRef Name="IdDoc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MatrixModelStoreContainer">
+          <EntitySet Name="ClientDoc" EntityType="Self.ClientDoc" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CSP" EntityType="Self.CSP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CSP_DOC" EntityType="Self.CSP_DOC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Documents" EntityType="Self.Documents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Donnees" EntityType="Self.Donnees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DonneesCIN" EntityType="Self.DonneesCIN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Emetteurs" EntityType="Self.Emetteurs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypeDoc" EntityType="Self.TypeDoc" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ClientDoc_CSP" Association="Self.FK_ClientDoc_CSP">
+            <End Role="CSP" EntitySet="CSP" />
+            <End Role="ClientDoc" EntitySet="ClientDoc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClientDoc_Documents" Association="Self.FK_ClientDoc_Documents">
+            <End Role="Documents" EntitySet="Documents" />
+            <End Role="ClientDoc" EntitySet="ClientDoc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CSP_DOC_CSP" Association="Self.FK_CSP_DOC_CSP">
+            <End Role="CSP" EntitySet="CSP" />
+            <End Role="CSP_DOC" EntitySet="CSP_DOC" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CSP_DOC_Documents" Association="Self.FK_CSP_DOC_Documents">
+            <End Role="Documents" EntitySet="Documents" />
+            <End Role="CSP_DOC" EntitySet="CSP_DOC" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documents_Emetteur" Association="Self.FK_Documents_Emetteur">
+            <End Role="Emetteurs" EntitySet="Emetteurs" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documents_Type" Association="Self.FK_Documents_Type">
+            <End Role="TypeDoc" EntitySet="TypeDoc" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Donnees_CSP" Association="Self.FK_Donnees_CSP">
+            <End Role="CSP" EntitySet="CSP" />
+            <End Role="Donnees" EntitySet="Donnees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Donnees_Documents" Association="Self.FK_Donnees_Documents">
+            <End Role="Documents" EntitySet="Documents" />
+            <End Role="Donnees" EntitySet="Donnees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DonneesCIN_ClientDocs" Association="Self.FK_DonneesCIN_ClientDocs">
+            <End Role="ClientDoc" EntitySet="ClientDoc" />
+            <End Role="DonneesCIN" EntitySet="DonneesCIN" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MatrixModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CSP">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Libelle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="CSP_DOC" Relationship="Self.FK_CSP_DOC_CSP" FromRole="CSP" ToRole="CSP_DOC" />
+          <NavigationProperty Name="Donnees" Relationship="Self.FK_Donnees_CSP" FromRole="CSP" ToRole="Donnees" />
+          <NavigationProperty Name="ClientDoc" Relationship="MatrixModel.FK_ClientDoc_CSP" FromRole="CSP" ToRole="ClientDoc" />
+        </EntityType>
+        <EntityType Name="CSP_DOC">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodeCSP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CodeDoc" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="C5" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="C6" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="C7" Type="Int32" />
+          <NavigationProperty Name="CSP" Relationship="Self.FK_CSP_DOC_CSP" FromRole="CSP_DOC" ToRole="CSP" />
+          <NavigationProperty Name="Documents" Relationship="Self.FK_CSP_DOC_Documents" FromRole="CSP_DOC" ToRole="Documents" />
+        </EntityType>
+        <EntityType Name="Documents">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Libelle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Origine" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CodeEmetteur" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Filler" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="C8" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="CSP_DOC" Relationship="Self.FK_CSP_DOC_Documents" FromRole="Documents" ToRole="CSP_DOC" />
+          <NavigationProperty Name="Emetteurs" Relationship="Self.FK_Documents_Emetteur" FromRole="Documents" ToRole="Emetteurs" />
+          <NavigationProperty Name="TypeDoc" Relationship="Self.FK_Documents_Type" FromRole="Documents" ToRole="TypeDoc" />
+          <NavigationProperty Name="Donnees" Relationship="Self.FK_Donnees_Documents" FromRole="Documents" ToRole="Donnees" />
+          <NavigationProperty Name="ClientDoc" Relationship="MatrixModel.FK_ClientDoc_Documents" FromRole="Documents" ToRole="ClientDoc" />
+        </EntityType>
+        <EntityType Name="Donnees">
+          <Key>
+            <PropertyRef Name="CodeData" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code_CSP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CodeDoc" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CodeData" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LibData" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TypeData" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="C7" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="C8" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="CSP" Relationship="Self.FK_Donnees_CSP" FromRole="Donnees" ToRole="CSP" />
+          <NavigationProperty Name="Documents" Relationship="Self.FK_Donnees_Documents" FromRole="Donnees" ToRole="Documents" />
+        </EntityType>
+        <EntityType Name="Emetteurs">
+          <Key>
+            <PropertyRef Name="CodeEmetteur" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CodeEmetteur" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LibeEmetteur" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TypeEmetteur" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Documents" Relationship="Self.FK_Documents_Emetteur" FromRole="Emetteurs" ToRole="Documents" />
+        </EntityType>
+        <EntityType Name="TypeDoc">
+          <Key>
+            <PropertyRef Name="Code_Type" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Code_Type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Documents" Relationship="Self.FK_Documents_Type" FromRole="TypeDoc" ToRole="Documents" />
+        </EntityType>
+        <Association Name="FK_CSP_DOC_CSP">
+          <End Role="CSP" Type="Self.CSP" Multiplicity="1" />
+          <End Role="CSP_DOC" Type="Self.CSP_DOC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CSP">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="CSP_DOC">
+              <PropertyRef Name="CodeCSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Donnees_CSP">
+          <End Role="CSP" Type="Self.CSP" Multiplicity="1" />
+          <End Role="Donnees" Type="Self.Donnees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CSP">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Donnees">
+              <PropertyRef Name="Code_CSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CSP_DOC_Documents">
+          <End Role="Documents" Type="Self.Documents" Multiplicity="1" />
+          <End Role="CSP_DOC" Type="Self.CSP_DOC" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documents">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="CSP_DOC">
+              <PropertyRef Name="CodeDoc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documents_Emetteur">
+          <End Role="Emetteurs" Type="Self.Emetteurs" Multiplicity="1" />
+          <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Emetteurs">
+              <PropertyRef Name="CodeEmetteur" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="CodeEmetteur" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Documents_Type">
+          <End Role="TypeDoc" Type="Self.TypeDoc" Multiplicity="1" />
+          <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeDoc">
+              <PropertyRef Name="Code_Type" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Donnees_Documents">
+          <End Role="Documents" Type="Self.Documents" Multiplicity="1" />
+          <End Role="Donnees" Type="Self.Donnees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documents">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Donnees">
+              <PropertyRef Name="CodeDoc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MatrixEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CSP" EntityType="Self.CSP" />
+          <EntitySet Name="CSP_DOC" EntityType="Self.CSP_DOC" />
+          <EntitySet Name="Documents" EntityType="Self.Documents" />
+          <EntitySet Name="Donnees" EntityType="Self.Donnees" />
+          <EntitySet Name="Emetteurs" EntityType="Self.Emetteurs" />
+          <EntitySet Name="TypeDoc" EntityType="Self.TypeDoc" />
+          <AssociationSet Name="FK_CSP_DOC_CSP" Association="Self.FK_CSP_DOC_CSP">
+            <End Role="CSP" EntitySet="CSP" />
+            <End Role="CSP_DOC" EntitySet="CSP_DOC" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Donnees_CSP" Association="Self.FK_Donnees_CSP">
+            <End Role="CSP" EntitySet="CSP" />
+            <End Role="Donnees" EntitySet="Donnees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CSP_DOC_Documents" Association="Self.FK_CSP_DOC_Documents">
+            <End Role="Documents" EntitySet="Documents" />
+            <End Role="CSP_DOC" EntitySet="CSP_DOC" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documents_Emetteur" Association="Self.FK_Documents_Emetteur">
+            <End Role="Emetteurs" EntitySet="Emetteurs" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Documents_Type" Association="Self.FK_Documents_Type">
+            <End Role="TypeDoc" EntitySet="TypeDoc" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Donnees_Documents" Association="Self.FK_Donnees_Documents">
+            <End Role="Documents" EntitySet="Documents" />
+            <End Role="Donnees" EntitySet="Donnees" />
+          </AssociationSet>
+          <EntitySet Name="sysdiagrams" EntityType="MatrixModel.sysdiagrams" />
+          <EntitySet Name="ClientDoc" EntityType="MatrixModel.ClientDoc" />
+          <EntitySet Name="DonneesCIN" EntityType="MatrixModel.DonneesCIN" />
+          <AssociationSet Name="FK_ClientDoc_CSP" Association="MatrixModel.FK_ClientDoc_CSP">
+            <End Role="CSP" EntitySet="CSP" />
+            <End Role="ClientDoc" EntitySet="ClientDoc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ClientDoc_Documents" Association="MatrixModel.FK_ClientDoc_Documents">
+            <End Role="Documents" EntitySet="Documents" />
+            <End Role="ClientDoc" EntitySet="ClientDoc" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DonneesCIN_ClientDocs" Association="MatrixModel.FK_DonneesCIN_ClientDocs">
+            <End Role="ClientDoc" EntitySet="ClientDoc" />
+            <End Role="DonneesCIN" EntitySet="DonneesCIN" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="ClientDoc">
+          <Key>
+            <PropertyRef Name="IdDoc" />
+          </Key>
+          <Property Name="IdClient" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CodeCSP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CodeDoc" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IdDoc" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="CSP" Relationship="MatrixModel.FK_ClientDoc_CSP" FromRole="ClientDoc" ToRole="CSP" />
+          <NavigationProperty Name="Documents" Relationship="MatrixModel.FK_ClientDoc_Documents" FromRole="ClientDoc" ToRole="Documents" />
+          <NavigationProperty Name="DonneesCIN" Relationship="MatrixModel.FK_DonneesCIN_ClientDocs" FromRole="ClientDoc" ToRole="DonneesCIN" />
+          <Property Name="UrlDoc" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DonneesCIN">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdDoc" Type="Int32" Nullable="false" />
+          <Property Name="NOCIN" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="NOM" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="PERNOM" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="DTNAISS" Type="DateTime" Precision="0" />
+          <Property Name="DTVALID" Type="DateTime" Precision="0" />
+          <Property Name="ADRESS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ADRESS2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VILLE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PPERE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NMERE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Dossier" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Link" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ClientDoc" Relationship="MatrixModel.FK_DonneesCIN_ClientDocs" FromRole="DonneesCIN" ToRole="ClientDoc" />
+        </EntityType>
+        <Association Name="FK_ClientDoc_CSP">
+          <End Type="MatrixModel.CSP" Role="CSP" Multiplicity="0..1" />
+          <End Type="MatrixModel.ClientDoc" Role="ClientDoc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CSP">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ClientDoc">
+              <PropertyRef Name="CodeCSP" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ClientDoc_Documents">
+          <End Type="MatrixModel.Documents" Role="Documents" Multiplicity="0..1" />
+          <End Type="MatrixModel.ClientDoc" Role="ClientDoc" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documents">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ClientDoc">
+              <PropertyRef Name="CodeDoc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DonneesCIN_ClientDocs">
+          <End Type="MatrixModel.ClientDoc" Role="ClientDoc" Multiplicity="1" />
+          <End Type="MatrixModel.DonneesCIN" Role="DonneesCIN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClientDoc">
+              <PropertyRef Name="IdDoc" />
+            </Principal>
+            <Dependent Role="DonneesCIN">
+              <PropertyRef Name="IdDoc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MatrixModelStoreContainer" CdmEntityContainer="MatrixEntities">
+          <EntitySetMapping Name="CSP">
+            <EntityTypeMapping TypeName="MatrixModel.CSP">
+              <MappingFragment StoreEntitySet="CSP">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Libelle" ColumnName="Libelle" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CSP_DOC">
+            <EntityTypeMapping TypeName="MatrixModel.CSP_DOC">
+              <MappingFragment StoreEntitySet="CSP_DOC">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CodeCSP" ColumnName="CodeCSP" />
+                <ScalarProperty Name="CodeDoc" ColumnName="CodeDoc" />
+                <ScalarProperty Name="C5" ColumnName="C5" />
+                <ScalarProperty Name="C6" ColumnName="C6" />
+                <ScalarProperty Name="C7" ColumnName="C7" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Documents">
+            <EntityTypeMapping TypeName="MatrixModel.Documents">
+              <MappingFragment StoreEntitySet="Documents">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Libelle" ColumnName="Libelle" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Origine" ColumnName="Origine" />
+                <ScalarProperty Name="CodeEmetteur" ColumnName="CodeEmetteur" />
+                <ScalarProperty Name="Filler" ColumnName="Filler" />
+                <ScalarProperty Name="C8" ColumnName="C8" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Donnees">
+            <EntityTypeMapping TypeName="MatrixModel.Donnees">
+              <MappingFragment StoreEntitySet="Donnees">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Code_CSP" ColumnName="Code_CSP" />
+                <ScalarProperty Name="CodeDoc" ColumnName="CodeDoc" />
+                <ScalarProperty Name="CodeData" ColumnName="CodeData" />
+                <ScalarProperty Name="LibData" ColumnName="LibData" />
+                <ScalarProperty Name="TypeData" ColumnName="TypeData" />
+                <ScalarProperty Name="C7" ColumnName="C7" />
+                <ScalarProperty Name="C8" ColumnName="C8" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Emetteurs">
+            <EntityTypeMapping TypeName="MatrixModel.Emetteurs">
+              <MappingFragment StoreEntitySet="Emetteurs">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CodeEmetteur" ColumnName="CodeEmetteur" />
+                <ScalarProperty Name="LibeEmetteur" ColumnName="LibeEmetteur" />
+                <ScalarProperty Name="TypeEmetteur" ColumnName="TypeEmetteur" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypeDoc">
+            <EntityTypeMapping TypeName="MatrixModel.TypeDoc">
+              <MappingFragment StoreEntitySet="TypeDoc">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Code_Type" ColumnName="Code_Type" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="MatrixModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientDoc">
+            <EntityTypeMapping TypeName="MatrixModel.ClientDoc">
+              <MappingFragment StoreEntitySet="ClientDoc">
+                <ScalarProperty Name="UrlDoc" ColumnName="UrlDoc" />
+                <ScalarProperty Name="IdDoc" ColumnName="IdDoc" />
+                <ScalarProperty Name="CodeDoc" ColumnName="CodeDoc" />
+                <ScalarProperty Name="CodeCSP" ColumnName="CodeCSP" />
+                <ScalarProperty Name="IdClient" ColumnName="IdClient" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DonneesCIN">
+            <EntityTypeMapping TypeName="MatrixModel.DonneesCIN">
+              <MappingFragment StoreEntitySet="DonneesCIN">
+                <ScalarProperty Name="Link" ColumnName="Link" />
+                <ScalarProperty Name="Dossier" ColumnName="Dossier" />
+                <ScalarProperty Name="NMERE" ColumnName="NMERE" />
+                <ScalarProperty Name="PPERE" ColumnName="PPERE" />
+                <ScalarProperty Name="VILLE" ColumnName="VILLE" />
+                <ScalarProperty Name="ADRESS2" ColumnName="ADRESS2" />
+                <ScalarProperty Name="ADRESS" ColumnName="ADRESS" />
+                <ScalarProperty Name="DTVALID" ColumnName="DTVALID" />
+                <ScalarProperty Name="DTNAISS" ColumnName="DTNAISS" />
+                <ScalarProperty Name="PERNOM" ColumnName="PERNOM" />
+                <ScalarProperty Name="NOM" ColumnName="NOM" />
+                <ScalarProperty Name="NOCIN" ColumnName="NOCIN" />
+                <ScalarProperty Name="IdDoc" ColumnName="IdDoc" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

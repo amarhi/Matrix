@@ -1,0 +1,58 @@
+﻿@model Matrix.Models.CSP_DOC
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>CSP_DOC</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.C5)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.C5)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.C6)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.C6)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.C7)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.C7)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CSP.Libelle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CSP.Libelle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Documents.Libelle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Documents.Libelle)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,42 @@
+﻿@model Matrix.Models.Emetteurs
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Emetteurs</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LibeEmetteur)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LibeEmetteur)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeEmetteur)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TypeEmetteur)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CodeEmetteur }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

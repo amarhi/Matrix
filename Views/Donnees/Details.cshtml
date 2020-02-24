@@ -1,0 +1,74 @@
+﻿@model Matrix.Models.Donnees
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Donnees</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LibData)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LibData)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TypeData)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TypeData)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.C7)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.C7)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.C8)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.C8)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CSP.Libelle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CSP.Libelle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Documents.Libelle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Documents.Libelle)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CodeData }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

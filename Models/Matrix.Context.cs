@@ -34,8 +34,5 @@ namespace Matrix.Models
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<ClientDoc> ClientDoc { get; set; }
         public virtual DbSet<DonneesCIN> DonneesCIN { get; set; }
-        
-        public virtual PanelModel PanelModel { get; set; }
     }
-
 }

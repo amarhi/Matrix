@@ -29,9 +29,6 @@ namespace Matrix.Models
         public string Dossier { get; set; }
         public string Link { get; set; }
     
-        public virtual Documents Documents { get; set; }
-        
         public virtual ClientDoc ClientDoc { get; set; }
     }
-       
 }

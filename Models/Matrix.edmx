@@ -13,7 +13,7 @@
           <Property Name="CodeCSP" Type="varchar" MaxLength="10" />
           <Property Name="CodeDoc" Type="varchar" MaxLength="10" />
           <Property Name="IdDoc" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UrlDoc" Type="nvarchar" MaxLength="150" />
+          <Property Name="UrlDoc" Type="nvarchar" MaxLength="300" />
         </EntityType>
         <EntityType Name="CSP">
           <Key>
@@ -483,7 +483,7 @@
           <NavigationProperty Name="CSP" Relationship="MatrixModel.FK_ClientDoc_CSP" FromRole="ClientDoc" ToRole="CSP" />
           <NavigationProperty Name="Documents" Relationship="MatrixModel.FK_ClientDoc_Documents" FromRole="ClientDoc" ToRole="Documents" />
           <NavigationProperty Name="DonneesCIN" Relationship="MatrixModel.FK_DonneesCIN_ClientDocs" FromRole="ClientDoc" ToRole="DonneesCIN" />
-          <Property Name="UrlDoc" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="UrlDoc" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DonneesCIN">
           <Key>

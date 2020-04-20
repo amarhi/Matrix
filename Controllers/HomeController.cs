@@ -60,8 +60,7 @@ namespace Matrix.Controllers
 
             return PartialView("_Panel", new PanelModel() { DocumentGuid = guid.ToString(), Document = pdf, Idc = Idc, Cs = Csp, Url=Url, cSP_DOC= cSP_DOC});
         }
-             
-        
+
         public class PanelPage
         {
             public string Guid { get; set; }
@@ -172,7 +171,7 @@ namespace Matrix.Controllers
             if (ModelState.IsValid)
             {
 
-                string path = Path.Combine(Server.MapPath("~/Uploads"), ViewBag.Url);
+            //    string path = Path.Combine(Server.MapPath("~/Uploads"), ViewBag.Url);
                 clientDoc.UrlDoc = ViewBag.FileName;
                 db.ClientDoc.Add(clientDoc);
                 db.SaveChanges();

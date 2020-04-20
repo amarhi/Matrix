@@ -16,7 +16,7 @@ namespace Matrix.Models
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Documents()
-        {   
+        {
             this.CSP_DOC = new HashSet<CSP_DOC>();
             this.Donnees = new HashSet<Donnees>();
             this.ClientDoc = new HashSet<ClientDoc>();

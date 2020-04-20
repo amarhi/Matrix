@@ -64,21 +64,21 @@
         </div>
 
     </div>
-    <hr />
-
-    <div id="panels" class="row">
-
-    </div>
-
-    @section scripts {              
-        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-        <script src="~/Scripts/fileupload/jquery.ui.widget.js"></script>
-        <script src="~/Scripts/fileupload/jquery.fileupload.js"></script>
-        <script src="~/Scripts/fileupload/jquery.iframe-transport.js"></script>
 
 
+ <hr />
 
-        <script>
+ <div id="panels" class="row">
+
+ </div>
+
+@section scripts {              
+   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+   <script src="~/Scripts/fileupload/jquery.ui.widget.js"></script>
+   <script src="~/Scripts/fileupload/jquery.fileupload.js"></script>
+   <script src="~/Scripts/fileupload/jquery.iframe-transport.js"></script>
+
+   <script>
       $(function () {
          $(document).on('click', 'a.closepanel', function () {
             var id = $(this).parents('div.panel').attr('id');
@@ -95,7 +95,7 @@
             $.ajax({
                type: "POST",
                url: '@Url.Action("Download", "Home")',
-               data:    (pages),
+               data: JSON.stringify(pages),
                contentType: "application/json",
                dataType: "text",
 

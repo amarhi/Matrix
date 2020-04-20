@@ -19,7 +19,7 @@ namespace Matrix.Models
         {
             this.CSP_DOC = new HashSet<CSP_DOC>();
             this.Donnees = new HashSet<Donnees>();
-            this.ClientDoc = new HashSet<Documents>();
+            this.ClientDoc = new HashSet<ClientDoc>();
         }
     
         public int Id { get; set; }
@@ -32,6 +32,6 @@ namespace Matrix.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Donnees> Donnees { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Documents> ClientDoc { get; set; }
+        public virtual ICollection<ClientDoc> ClientDoc { get; set; }
     }
 }

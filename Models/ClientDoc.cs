@@ -18,7 +18,6 @@ namespace Matrix.Models
         public ClientDoc()
         {
             this.DonneesCIN = new HashSet<DonneesCIN>();
-           
         }
     
         public string IdClient { get; set; }
@@ -29,9 +28,7 @@ namespace Matrix.Models
     
         public virtual CSP CSP { get; set; }
         public virtual Documents Documents { get; set; }
-      
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DonneesCIN> DonneesCIN { get; set; }
-                
-    }
+    }   
 }
